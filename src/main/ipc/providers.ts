@@ -15,7 +15,7 @@ import {
   hasCapableModel,
   effectiveCaps
 } from '../providers/registry'
-import { signInWithChatGPT } from '../providers/openai-chatgpt-plan'
+import { signInWithChatGPT, hostIdFrom } from '../providers/openai-chatgpt-plan'
 import { getDb, schema } from '../db'
 import { getSetting } from '../settings'
 import { TASKS, CAPABILITIES } from '@shared/types'
@@ -51,8 +51,10 @@ export const providerRoutes = {
   }),
   'providers.signInChatGPT': route(none, async () => {
     const id = saveConnection({ type: 'chatgpt-plan' })
-    const row = getConnection(id)!
-    const r = await signInWithChatGPT(row.extra ?? {})
+    // Persist this installation's host ID before the first sign-in, as OpenAI requires.
+    const hostId = hostIdFrom(getConnection(id)!.extra ?? {})
+    saveConnection({ type: 'chatgpt-plan', extra: { extAgentHostId: hostId } })
+    const r = await signInWithChatGPT(getConnection(id)!.extra ?? {})
     saveConnection({
       type: 'chatgpt-plan',
       extra: {

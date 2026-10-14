@@ -14,6 +14,8 @@ export interface AppSettings {
   dataforseoLogin: string
   serpProvider: 'serper' | 'brave' | ''
   advanced: boolean
+  /** Look at GitHub Releases once when the app starts (an anonymous request; nothing is sent). */
+  checkUpdatesOnStart: boolean
 }
 
 export const DEFAULT_SETTINGS: AppSettings = {
@@ -27,7 +29,8 @@ export const DEFAULT_SETTINGS: AppSettings = {
   googleClientId: '',
   dataforseoLogin: '',
   serpProvider: '',
-  advanced: false
+  advanced: false,
+  checkUpdatesOnStart: true
 }
 
 export function getSetting<K extends keyof AppSettings>(key: K): AppSettings[K] {

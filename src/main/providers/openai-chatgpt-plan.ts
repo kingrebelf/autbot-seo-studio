@@ -121,6 +121,17 @@ async function verifyIdToken(
   return payload
 }
 
+/**
+ * The installation's host ID. OpenAI expects a random UUID in the form `urn:uuid:…`, chosen once
+ * per installation and reused for every sign-in (a bare UUID is rejected as invalid).
+ */
+export function hostIdFrom(extra: Record<string, unknown>): string {
+  const saved = typeof extra.extAgentHostId === 'string' ? extra.extAgentHostId.trim() : ''
+  if (/^urn:uuid:[0-9a-f-]{36}$/i.test(saved)) return saved
+  if (/^[0-9a-f-]{36}$/i.test(saved)) return `urn:uuid:${saved}`
+  return `urn:uuid:${randomUUID()}`
+}
+
 export interface PlanSignInResult {
   creds: PlanCredentials
   eligible: boolean
@@ -132,8 +143,7 @@ export async function signInWithChatGPT(
   signal?: AbortSignal
 ): Promise<PlanSignInResult> {
   const savedClientId = typeof extra.clientId === 'string' ? extra.clientId : ''
-  const hostId =
-    typeof extra.extAgentHostId === 'string' && extra.extAgentHostId ? extra.extAgentHostId : randomUUID()
+  const hostId = hostIdFrom(extra)
   const prev = getSecretJson<PlanCredentials>(TOKENS_REF)
   const lb = await startLoopback(SIWC.callbackPath, SIWC.preferredPort)
   try {

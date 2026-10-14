@@ -7,6 +7,7 @@ import { errorMessage } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Callout } from '@/components/ui/misc'
+import { Switch } from '@/components/ui/switch'
 import { toast } from '@/components/ui/toast'
 import { useConfirm } from '@/components/ui/confirm'
 import { APP_NAME, DOCS_URL, ISSUES_URL } from '@shared/constants'
@@ -15,7 +16,7 @@ import { ExternalButton, openLink } from './shared'
 type Update = RouteOutput<'app.checkUpdates'>
 
 export function AboutTab() {
-  const { info } = useApp()
+  const { info, settings, setSetting } = useApp()
   const nav = useNavigate()
   const [busy, setBusy] = useState<string | null>(null)
   const [update, setUpdate] = useState<Update | null>(null)
@@ -81,6 +82,13 @@ export function AboutTab() {
               <Wand2 /> Run setup again
             </Button>
           </div>
+          <label className="flex items-center gap-2 text-sm">
+            <Switch
+              checked={settings?.checkUpdatesOnStart ?? true}
+              onCheckedChange={(v) => void setSetting('checkUpdatesOnStart', v)}
+            />
+            Tell me when a new version is out (checks GitHub once when the app starts)
+          </label>
           {update && (
             <Callout
               kind={update.available ? 'success' : update.latest ? 'info' : 'warning'}
@@ -88,13 +96,39 @@ export function AboutTab() {
             >
               {update.message}
               {update.available && update.url && (
-                <div className="mt-2">
-                  <Button size="sm" onClick={() => openLink(update.url ?? '')}>
-                    <Download /> Download {update.latest}
-                  </Button>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    The app never installs updates by itself. Download the new version and install it like
-                    before.
+                <div className="mt-2 space-y-2">
+                  <div className="flex flex-wrap gap-2">
+                    {update.installer && (
+                      <Button
+                        size="sm"
+                        loading={busy === 'install'}
+                        onClick={() =>
+                          void run(
+                            'install',
+                            async () => {
+                              const r = await api('app.installUpdate')
+                              toast({ kind: r.started ? 'success' : 'info', title: r.message })
+                            },
+                            'Try again, or click Download and run the installer yourself.'
+                          )
+                        }
+                      >
+                        {busy !== 'install' && <Download />} Install {update.latest}
+                      </Button>
+                    )}
+                    <Button
+                      size="sm"
+                      variant={update.installer ? 'outline' : 'default'}
+                      onClick={() => openLink(update.url ?? '')}
+                    >
+                      {!update.installer && <Download />}{' '}
+                      {update.installer ? 'Release notes' : `Download ${update.latest}`}
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {update.installer
+                      ? `Downloads the ${Math.round(update.installer.size / 1_000_000)} MB installer, closes the app, updates it in place and opens it again. Your websites, content and keys are kept.`
+                      : 'Download the new version and install it over this one. Your websites, content and keys are kept.'}
                   </p>
                 </div>
               )}

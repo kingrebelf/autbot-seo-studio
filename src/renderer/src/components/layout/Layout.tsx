@@ -18,6 +18,7 @@ import { useJobs } from '@/hooks/useJobs'
 import { cn } from '@/lib/utils'
 import { Select } from '@/components/ui/input'
 import { toast } from '@/components/ui/toast'
+import { api } from '@/lib/api'
 import { ActivityDrawer } from './ActivityDrawer'
 import { NotificationsPanel } from './NotificationsPanel'
 
@@ -33,7 +34,7 @@ const NAV = [
 ]
 
 export function Layout() {
-  const { sites, site, setActiveSite, info } = useApp()
+  const { sites, site, setActiveSite, info, settings } = useApp()
   const nav = useNavigate()
   const jobs = useJobs(site?.id ?? null)
   const [activityOpen, setActivityOpen] = useState(false)
@@ -54,6 +55,27 @@ export function Layout() {
       }),
     []
   )
+
+  // Check GitHub Releases once per launch and offer the update (nothing installs by itself).
+  useEffect(() => {
+    if (info?.devMode || !settings?.checkUpdatesOnStart) return
+    const t = setTimeout(() => {
+      api('app.checkUpdates')
+        .then((u) => {
+          if (u.available)
+            toast({
+              kind: 'info',
+              title: `Autbot SEO Studio ${u.latest} is available`,
+              body: u.installer
+                ? 'It can install itself in a minute and keep all your data.'
+                : 'Download it from the release page.',
+              action: { label: 'See update', href: '#/settings/about' }
+            })
+        })
+        .catch(() => undefined)
+    }, 5000)
+    return () => clearTimeout(t)
+  }, [info?.devMode, settings?.checkUpdatesOnStart])
 
   return (
     <div className="flex h-full">

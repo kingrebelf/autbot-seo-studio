@@ -5,7 +5,7 @@ import { route, none, siteIdInput, idInput } from './route'
 import { rt } from '../runtime'
 import { getAllSettings, setSetting, DEFAULT_SETTINGS, type AppSettings } from '../settings'
 import { backup, restore, exportLogs } from '../backup'
-import { checkForUpdates } from '../updates'
+import { checkForUpdates, downloadAndInstall } from '../updates'
 import { listNotifications, markNotificationsRead } from '../notify'
 import { getDashboard, usageSummary, usageCsvRows } from '../dashboard'
 import { listTemplates, saveTemplate, resetTemplate } from '../prompts'
@@ -64,6 +64,7 @@ export const appRoutes = {
     return exportLogs(dest)
   }),
   'app.checkUpdates': route(none, () => checkForUpdates(rt().appVersion)),
+  'app.installUpdate': route(none, () => downloadAndInstall(rt().appVersion)),
   'notifications.list': route(z.object({ siteId: z.number().nullable() }), ({ siteId }) =>
     listNotifications(siteId)
   ),

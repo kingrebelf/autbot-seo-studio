@@ -249,3 +249,11 @@ After generation or upload, sharp converts each image to WebP at quality 80, res
 *2026-10-14*
 
 Everything lives in Electron's `userData` folder: `autbot.db` (SQLite), `secrets.bin.json` (encrypted secrets), `images/`, and `logs/app.log`. For tests, `AUTBOT_USER_DATA` can point the app at a different folder. Backups use SQLite's online backup API (safe while the app is running) and include the database and images only. Restore keeps a copy of the current database as `autbot.db.before-restore-<timestamp>` before replacing it.
+
+### 2026-10-14: Sign in with ChatGPT host ID uses `urn:uuid:`
+
+OpenAI only accepts `ext_agent_host_id` values in the forms `urn:uuid:…`, `urn:ietf:params:oauth:jwk-thumbprint:…` or `did:key:…`. v1.0.0 sent a bare UUID, which the authorize page rejected ("Invalid authorize request", param `ext_agent_host_id`). The app now generates `urn:uuid:<uuidv4>` once per installation, saves it before the first sign-in and reuses it (an older bare UUID is upgraded by adding the prefix).
+
+### 2026-10-14: Updating with the installer
+
+There is no background auto-updater. On start-up the app makes one anonymous request to the GitHub Releases API (can be turned off in Settings > About). On Windows, "Install" downloads the new `-setup.exe` (only from this repo's release downloads, size checked), runs it with `/S --force-run` and quits; NSIS upgrades the existing install in place and re-opens the app. User data lives in the user data folder, which the installer never touches (`deleteAppDataOnUninstall: false`). macOS and Linux get the download link, because an unsigned app can't replace itself cleanly there.

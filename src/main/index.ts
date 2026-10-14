@@ -116,7 +116,8 @@ function initRuntime(): void {
         ]
       })
       return r.canceled ? [] : r.filePaths
-    }
+    },
+    quit: () => app.quit()
   })
 }
 

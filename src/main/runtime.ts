@@ -34,6 +34,8 @@ export interface Runtime {
     folder?: boolean
     multiple?: boolean
   }): Promise<string[]>
+  /** Quit the app (used to hand over to an update installer). Optional outside Electron. */
+  quit?(): void
 }
 
 let current: Runtime | null = null

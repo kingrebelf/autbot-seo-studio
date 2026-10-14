@@ -27,6 +27,14 @@ Get the latest installer from the **[Releases page](https://github.com/kingrebel
 
 Intel Macs: the release only includes an Apple Silicon build for now. You can build your own from source (see below).
 
+### Updating
+
+Your websites, content, settings and keys live in your user data folder, not the install folder, so updating never loses them.
+
+- **Windows:** when a new version is out, the app tells you at start-up. Go to **Settings > About** and click **Install**. The app downloads the new installer, closes, updates itself in place and opens again. You can also download the new `.exe` and run it over the old one.
+- **macOS:** download the new `.dmg` and drag the app to Applications, choosing **Replace**.
+- **Linux:** replace the old `.AppImage` with the new one, or `sudo apt install ./autbot-seo-studio_*.deb` again.
+
 ## Connect your AI
 
 Consumer chat subscriptions are not all usable by outside apps. This table was accurate as of October 2026. Provider rules change, so check [docs/CONNECT-AI.md](docs/CONNECT-AI.md) for the latest notes and step-by-step instructions for each one.
@@ -71,7 +79,7 @@ For a slower, step-by-step walkthrough, see [docs/GETTING-STARTED.md](docs/GETTI
 
 - **Drafts only.** The app never publishes to your live website. WordPress posts are always created as drafts, and the code is written so it cannot send any other status. Refreshing an existing page creates a separate "[Refresh]" draft; your live page is never changed. A human always clicks publish.
 - **Keys stay on your computer.** API keys, passwords and sign-in tokens are encrypted with your operating system's secure storage and kept in a separate file in the app's data folder. They are never stored in the database, never written to logs, and never included in backups or exports. Each key is only ever sent to the provider it belongs to.
-- **No tracking.** No telemetry, no analytics, no phoning home. The app only talks to the services you connect, your own website, the links in your drafts (to check they still work), Google Autocomplete suggestions (on by default; turn it off in **Settings > Data Sources**), and, when you check for updates, the GitHub Releases page for this app.
+- **No tracking.** No telemetry, no analytics, no phoning home. The app only talks to the services you connect, your own website, the links in your drafts (to check they still work), Google Autocomplete suggestions (on by default; turn it off in **Settings > Data Sources**), and the GitHub Releases page for this app (once at start-up to see if there's a new version; you can turn that off in **Settings > About**).
 - **The AI doesn't invent numbers.** If no data source provides search volume, the app says "Volume: unknown" and labels any judgment as an "AI estimate".
 - **You check the facts.** Anything the AI doesn't know about your business becomes a `[CONFIRM: ...]` placeholder that blocks sending until you fill it in or dismiss it. Health, legal and financial topics get an extra warning.
 

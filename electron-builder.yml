@@ -39,6 +39,10 @@ nsis:
   createStartMenuShortcut: true
   shortcutName: Autbot SEO Studio
   uninstallDisplayName: Autbot SEO Studio
+  # Updating = running a newer setup over the old one (by hand, or from Settings > About >
+  # Install update). It reuses the same folder and never touches the user's data folder.
+  deleteAppDataOnUninstall: false
+  runAfterFinish: true
 
 mac:
   icon: build/icon.icns
@@ -71,5 +75,6 @@ deb:
   recommends:
     - gnome-keyring
 
-# No auto-update. The app only checks GitHub Releases and shows a download link.
+# No background auto-update. The app checks GitHub Releases and, on Windows, can download and
+# run the new installer when the user clicks "Install update" (src/main/updates.ts).
 publish: null
