@@ -1,11 +1,18 @@
 name: Release
 
 # Builds installers for Windows, macOS and Linux when a version tag (v1.2.3) is pushed,
-# then attaches them to a GitHub Release for that tag.
+# then attaches them to a GitHub Release for that tag. It can also be started by hand
+# (Actions > Release > Run workflow), which creates the tag on the chosen commit.
 on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to create, e.g. v1.0.0'
+        required: true
+        default: 'v1.0.0'
 
 permissions:
   contents: write
@@ -52,8 +59,10 @@ jobs:
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ inputs.tag || github.ref_name }}
+          target_commitish: ${{ github.sha }}
           draft: false
-          prerelease: ${{ contains(github.ref_name, '-') }}
+          prerelease: ${{ contains(inputs.tag || github.ref_name, '-') }}
           fail_on_unmatched_files: false
           files: |
             release/*/*.exe
