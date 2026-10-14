@@ -1,0 +1,30 @@
+{
+  "_comment": "Editable fallback capability tags, used when a provider's model list does not say what a model can do. Patterns are case-insensitive regular expressions matched against the model id.",
+  "rules": [
+    { "pattern": ".*", "add": ["text"] },
+    {
+      "pattern": "gpt-|o\\d|claude|gemini|grok|muse|llama|qwen|mistral|deepseek|command|phi",
+      "add": ["json"]
+    },
+    {
+      "pattern": "gpt-4o|gpt-4\\.1|gpt-5|gpt-6|o3|o4|claude|gemini|grok-(2-vision|4|5)|vision|llava|vl|muse|llama-?4|gemma3",
+      "add": ["vision"]
+    },
+    {
+      "pattern": "gpt-4o|gpt-4\\.1|gpt-5|gpt-6|o3|o4|claude|gemini|grok|muse|sonar|online",
+      "add": ["webSearch"]
+    },
+    { "pattern": "gpt-|claude|gemini|grok|muse|llama|qwen|mistral", "add": ["toolUse"] },
+    { "pattern": "gpt-4\\.1|gpt-5|gpt-6|claude|gemini|grok-4|grok-5|muse", "add": ["longContext"] },
+    {
+      "pattern": "image|dall-e|imagen|flux|stable-diffusion|sdxl|grok-2-image|nano-banana",
+      "add": ["imageGen"],
+      "remove": ["json", "webSearch", "toolUse"]
+    },
+    {
+      "pattern": "embed|whisper|tts|transcribe|audio|realtime|moderation|davinci|babbage|search-preview|computer-use|-instruct$|^text-|rerank|guard",
+      "hide": true
+    },
+    { "pattern": "deprecated|preview-\\d{2}-\\d{2}$", "hide": true }
+  ]
+}

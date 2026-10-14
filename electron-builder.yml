@@ -1,0 +1,75 @@
+# Packaging config for electron-builder. `npm run build` runs the typecheck, then
+# electron-vite build, then electron-builder for the current platform.
+appId: com.autbot.seostudio
+productName: Autbot SEO Studio
+copyright: Copyright (c) 2026 Autbot
+
+directories:
+  buildResources: build
+  output: release/${version}
+
+files:
+  - out/**
+  - package.json
+  # The main process sets the window icon from build/icon.png (src/main/index.ts).
+  # buildResources are not packed by default, so include this one file explicitly.
+  - build/icon.png
+
+# Native modules must live outside the asar archive so the OS can load them.
+asarUnpack:
+  - node_modules/better-sqlite3/**
+  - node_modules/sharp/**
+  - node_modules/@img/**
+
+# Rebuild native modules (better-sqlite3) against Electron's headers if needed.
+npmRebuild: true
+
+win:
+  icon: build/icon.ico
+  target:
+    - target: nsis
+      arch: [x64]
+  artifactName: ${name}-${version}-setup.${ext}
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  perMachine: false
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Autbot SEO Studio
+  uninstallDisplayName: Autbot SEO Studio
+
+mac:
+  icon: build/icon.icns
+  category: public.app-category.productivity
+  # Unsigned build: no Apple Developer certificate. The README explains "Open anyway".
+  identity: null
+  hardenedRuntime: false
+  gatekeeperAssess: false
+  target:
+    - target: dmg
+  artifactName: ${name}-${version}-${arch}.${ext}
+
+dmg:
+  artifactName: ${name}-${version}-${arch}.${ext}
+
+linux:
+  icon: build/icon.png
+  category: Office
+  maintainer: Autbot
+  vendor: Autbot
+  synopsis: Run your own SEO content system on your computer.
+  description: A free, open-source desktop app that lets a small-business owner run their own SEO content system.
+  target:
+    - AppImage
+    - deb
+  artifactName: ${name}-${version}-${arch}.${ext}
+
+deb:
+  # Secure key storage on Linux needs a keyring (GNOME Keyring or KWallet).
+  recommends:
+    - gnome-keyring
+
+# No auto-update. The app only checks GitHub Releases and shows a download link.
+publish: null

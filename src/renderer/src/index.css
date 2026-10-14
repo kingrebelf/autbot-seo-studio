@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --primary: 16 90% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 42%;
+    --accent: 210 40% 94%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 70% 36%;
+    --warning: 38 92% 45%;
+    --border: 214 32% 90%;
+    --input: 214 32% 85%;
+    --ring: 16 90% 50%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 222 47% 7%;
+    --foreground: 210 40% 96%;
+    --card: 222 40% 10%;
+    --card-foreground: 210 40% 96%;
+    --primary: 18 95% 56%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 217 30% 18%;
+    --secondary-foreground: 210 40% 96%;
+    --muted: 217 30% 16%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 30% 20%;
+    --accent-foreground: 210 40% 96%;
+    --destructive: 0 63% 48%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 60% 45%;
+    --warning: 38 92% 55%;
+    --border: 217 30% 20%;
+    --input: 217 30% 26%;
+    --ring: 18 95% 56%;
+  }
+  * {
+    @apply border-border;
+  }
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family:
+      system-ui,
+      -apple-system,
+      'Segoe UI',
+      Roboto,
+      sans-serif;
+    font-size: 14px;
+  }
+}
+
+/* Editor content */
+.prose-editor {
+  @apply max-w-none leading-relaxed outline-none;
+}
+.prose-editor h1 {
+  @apply mb-4 mt-6 text-3xl font-bold;
+}
+.prose-editor h2 {
+  @apply mb-3 mt-6 text-2xl font-semibold;
+}
+.prose-editor h3 {
+  @apply mb-2 mt-4 text-xl font-semibold;
+}
+.prose-editor h4 {
+  @apply mb-2 mt-3 text-lg font-semibold;
+}
+.prose-editor p {
+  @apply my-3;
+}
+.prose-editor ul {
+  @apply my-3 list-disc pl-6;
+}
+.prose-editor ol {
+  @apply my-3 list-decimal pl-6;
+}
+.prose-editor blockquote {
+  @apply my-4 border-l-4 border-border pl-4 italic text-muted-foreground;
+}
+.prose-editor a {
+  @apply text-primary underline;
+}
+.prose-editor img {
+  @apply my-4 max-w-full rounded-md;
+}
+.prose-editor img.ProseMirror-selectednode {
+  @apply ring-2 ring-primary;
+}
+.prose-editor table {
+  @apply my-4 w-full border-collapse;
+}
+.prose-editor td,
+.prose-editor th {
+  @apply border border-border p-2 align-top;
+}
+.prose-editor th {
+  @apply bg-muted font-semibold;
+}
+.prose-editor .confirm-mark {
+  background: #fde047;
+  color: #111827;
+  border-radius: 3px;
+  padding: 0 2px;
+}
+.prose-editor p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  @apply pointer-events-none float-left h-0 text-muted-foreground;
+}
+.prose-preview h1 {
+  @apply text-2xl font-bold;
+}
+.prose-preview h2 {
+  @apply mt-4 text-xl font-semibold;
+}
+.prose-preview h3 {
+  @apply mt-3 text-lg font-semibold;
+}
+.prose-preview p {
+  @apply my-2;
+}
+.prose-preview ul {
+  @apply list-disc pl-6;
+}

@@ -1,0 +1,4 @@
+out
+dist
+node_modules
+src/main/db/migrations

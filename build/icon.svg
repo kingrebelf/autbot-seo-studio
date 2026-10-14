@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1E3A5F"/>
+      <stop offset="1" stop-color="#0F1E33"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#F59E0B"/>
+      <stop offset="1" stop-color="#FBBF24"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square tile (macOS-style safe margin of 100px) -->
+  <rect x="100" y="100" width="824" height="824" rx="184" fill="url(#bg)"/>
+  <!-- Rising bars -->
+  <rect x="236" y="600" width="120" height="188" rx="24" fill="#FFFFFF" fill-opacity="0.55"/>
+  <rect x="402" y="500" width="120" height="288" rx="24" fill="#FFFFFF" fill-opacity="0.72"/>
+  <rect x="568" y="400" width="120" height="388" rx="24" fill="#FFFFFF" fill-opacity="0.88"/>
+  <!-- Upward trend line with arrow head -->
+  <polyline points="236,520 402,420 568,330 733,249" fill="none" stroke="url(#line)" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="826,204 763,310 699,180" fill="#FBBF24" stroke="#FBBF24" stroke-width="16" stroke-linejoin="round"/>
+</svg>

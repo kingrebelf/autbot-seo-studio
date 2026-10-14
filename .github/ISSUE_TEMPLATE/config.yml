@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Getting started guide
+    url: https://github.com/kingrebelf/autbot-seo-studio/blob/main/docs/GETTING-STARTED.md
+    about: Step-by-step setup for your first piece of content.
+  - name: Connecting your AI
+    url: https://github.com/kingrebelf/autbot-seo-studio/blob/main/docs/CONNECT-AI.md
+    about: How to get a key or sign in for each AI provider.
